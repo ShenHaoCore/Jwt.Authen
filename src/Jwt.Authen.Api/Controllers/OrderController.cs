@@ -20,6 +20,6 @@ public class OrderController : ControllerBase
     public IActionResult Create([FromBody] CreateOrderModel request)
     {
         if (request is null) { throw new ArgumentNullException(nameof(request)); }
-        return Content("OK");
+        return Ok("SUCCESS");
     }
 }
