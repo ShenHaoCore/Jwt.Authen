@@ -14,9 +14,9 @@ public class TokenService
     private readonly string _secret;
     private readonly string _issuer;
     private readonly string _audience;
-    
+
     // 模拟数据库中的refresh tokens存储
-    private static Dictionary<string, Tuple<string, DateTime>> _refreshTokens = new Dictionary<string, Tuple<string, DateTime>>();
+    private static Dictionary<string, (string userId, DateTime expires)> _refreshTokens = [];
 
     /// <summary>
     /// 
@@ -41,7 +41,7 @@ public class TokenService
         SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         JwtSecurityToken token = new JwtSecurityToken(issuer: _issuer, audience: _audience, claims: claims, expires: DateTime.Now.AddMinutes(15), signingCredentials: creds);
         string refreshToken = GenerateRefreshToken();
-        _refreshTokens[refreshToken] = new Tuple<string, DateTime>(userId, DateTime.Now.AddDays(7)); // 将刷新令牌与到期时间一起存储在模拟数据库中
+        _refreshTokens[refreshToken] = (userId, DateTime.Now.AddDays(7)); // 将刷新令牌与到期时间一起存储在模拟数据库中
         return (new JwtSecurityTokenHandler().WriteToken(token), refreshToken);
     }
 
@@ -65,10 +65,10 @@ public class TokenService
     /// <param name="refreshToken"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    public (bool isValidate, string? userId) ValidateRefreshToken(string refreshToken)
+    public (bool isValidate, string userId) ValidateRefreshToken(string refreshToken)
     {
-        if (!_refreshTokens.TryGetValue(refreshToken, out var tokenDetails)) { return (false, null); }
-        if (tokenDetails.Item2 <= DateTime.Now) { _refreshTokens.Remove(refreshToken); return (false, null); }
-        return (true, tokenDetails.Item1);
+        if (!_refreshTokens.TryGetValue(refreshToken, out var tokenDetails)) { return (false, string.Empty); }
+        if (tokenDetails.Item2 <= DateTime.Now) { _refreshTokens.Remove(refreshToken); return (false, string.Empty); }
+        return (true, tokenDetails.userId);
     }
 }

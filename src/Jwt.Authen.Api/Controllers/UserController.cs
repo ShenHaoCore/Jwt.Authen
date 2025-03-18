@@ -29,7 +29,7 @@ public class UserController : ControllerBase
     [HttpPost]
     public IActionResult Login([FromBody] LoginModel request)
     {
-        if (request is null) { throw new ArgumentNullException(nameof(request)); }
+        ArgumentNullException.ThrowIfNull(request);
         // 此处应有用户身份验证逻辑
         (string accessToken, string refreshToken) = _tokenService.GenerateTokens("12306");
         return Ok(new { accessToken, refreshToken });
@@ -43,11 +43,10 @@ public class UserController : ControllerBase
     [HttpPost]
     public IActionResult RefreshToken([FromBody] TokenApiModel request)
     {
-        if (request is null) { throw new ArgumentNullException(nameof(request)); }
+        ArgumentNullException.ThrowIfNull(request);
         // 在实际应用中，这里需要检查refresh token的有效性以及它是否与存储的refresh token匹配
-        (bool isValidate, string? userId) = _tokenService.ValidateRefreshToken(request.RefreshToken);
+        (bool isValidate, string userId) = _tokenService.ValidateRefreshToken(request.RefreshToken);
         if (!isValidate) { return Unauthorized(); }
-        if (string.IsNullOrEmpty(userId)) { throw new ArgumentNullException(nameof(userId)); }
         (string accessToken, string refreshToken) = _tokenService.GenerateTokens(userId);
         return Ok(new { accessToken, refreshToken });
     }
