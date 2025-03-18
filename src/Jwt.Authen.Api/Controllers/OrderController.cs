@@ -19,7 +19,7 @@ public class OrderController : ControllerBase
     [Authorize]
     public IActionResult Create([FromBody] CreateOrderModel request)
     {
-        if (request is null) { throw new ArgumentNullException(nameof(request)); }
+        ArgumentNullException.ThrowIfNull(request);
         return Ok("SUCCESS");
     }
 }
