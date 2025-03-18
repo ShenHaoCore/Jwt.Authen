@@ -1,6 +1,12 @@
 @Jwt.Authen.Api_HostAddress = http://localhost:5266
 
-GET {{Jwt.Authen.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### µÇÂ¼½Ó¿Ú
+POST {{Jwt.Authen.Api_HostAddress}}/api/User/Login
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": ""
+}
 
 ###
