@@ -57,6 +57,7 @@ public class OrderController : ControllerBase
     public IActionResult Put(string id, UpdateOrderModel order)
     {
         ArgumentNullException.ThrowIfNull(id);
+        ArgumentNullException.ThrowIfNull(order);
         return Ok($"SUCCESS-UPDATE-{id}");
     }
 
