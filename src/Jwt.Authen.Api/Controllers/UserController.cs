@@ -27,6 +27,8 @@ public class UserController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost]
+    [EndpointSummary("用户登录API")]
+    [EndpointDescription("用户登录获取TOKEN")]
     public IActionResult Login([FromBody] LoginModel request)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -41,6 +43,8 @@ public class UserController : ControllerBase
     /// <param name="request"></param>
     /// <returns></returns>
     [HttpPost]
+    [EndpointSummary("TOKEN刷新API")]
+    [EndpointDescription("用户使用长时效TOKEN获取新TOKEN")]
     public IActionResult RefreshToken([FromBody] TokenApiModel request)
     {
         ArgumentNullException.ThrowIfNull(request);

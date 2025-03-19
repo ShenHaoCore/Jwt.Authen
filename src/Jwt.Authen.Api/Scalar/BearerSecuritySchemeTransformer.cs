@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 
-namespace Jwt.Authen.Api;
+namespace Jwt.Authen.Api.Scalar;
 
 /// <summary>
 /// 

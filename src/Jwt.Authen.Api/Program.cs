@@ -1,4 +1,4 @@
-using Jwt.Authen.Api;
+using Jwt.Authen.Api.Scalar;
 using Jwt.Authen.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -30,6 +30,7 @@ builder.Services.AddSingleton<TokenService>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options => {
+    options.AddDocumentTransformer<AuthenApiDocumentTransformer>();
     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
 });
 
