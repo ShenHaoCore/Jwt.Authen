@@ -25,7 +25,6 @@ builder.Services.AddAuthentication(options => {
     };
 });
 builder.Services.AddSingleton<TokenService>();
-builder.Services.AddSingleton<RedisService>();
 
 // Add services to the container.
 builder.Services.AddControllers();

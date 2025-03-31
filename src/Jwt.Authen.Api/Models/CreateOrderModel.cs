@@ -20,7 +20,7 @@ public class CreateOrderModel
     /// 价格
     /// </summary>
     [property: Required]
-    [property: DefaultValue(typeof(decimal), "100.00")]
+    [property: DefaultValue(typeof(decimal), "100.123456")]
     [property: Description("价格")]
     public decimal Price { get; set; }
 }
