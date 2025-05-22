@@ -45,7 +45,7 @@ builder.Services.AddApiVersioning(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
-foreach (var version in ApiVersionHelper.GetApiVersions(typeof(ApiVersionConsts)))
+foreach (var version in ApiVersionConsts.All)
 {
     builder.Services.AddOpenApi($"v{version}", option =>
     {
@@ -53,7 +53,7 @@ foreach (var version in ApiVersionHelper.GetApiVersions(typeof(ApiVersionConsts)
         option.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
         option.AddDocumentTransformer((document, context, cancellationToken) =>
         {
-            document.Info = new() { Title = $"微服务 - V{version.ToUpper()}", Version = $"v{version}", Description = $"微服务相关接口" };
+            document.Info = new() { Title = $"微服务 - V{version}", Version = $"v{version}", Description = $"微服务相关接口" };
             return Task.CompletedTask;
         });
     });
