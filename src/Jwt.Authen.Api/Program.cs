@@ -3,9 +3,7 @@ using Jwt.Authen.Api.Commons;
 using Jwt.Authen.Api.Scalar;
 using Jwt.Authen.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using System.Text;
 
