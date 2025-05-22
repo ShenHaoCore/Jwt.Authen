@@ -1,15 +1,17 @@
-﻿using Jwt.Authen.Api.Models;
+﻿using Asp.Versioning;
+using Jwt.Authen.Api.Commons;
+using Jwt.Authen.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Jwt.Authen.Api.Controllers;
+namespace Jwt.Authen.Api.Controllers.V2;
 
 /// <summary>
 /// 订单
 /// </summary>
-[Route("api/[controller]/[action]")]
-[ApiController]
-public class OrderController : ControllerBase
+[Authorize]
+[ApiVersion(ApiVersionConsts.V2)]
+public class OrderController : BaseApiController
 {
     /// <summary>
     /// 创建
@@ -17,7 +19,6 @@ public class OrderController : ControllerBase
     /// <param name="order">订单</param>
     /// <returns></returns>
     [HttpPost]
-    [Authorize]
     [Tags("幂等接口")]
     [EndpointSummary("创建订单API")]
     [EndpointDescription("创建订单")]
@@ -33,7 +34,6 @@ public class OrderController : ControllerBase
     /// <param name="id">ID</param>
     /// <returns></returns>
     [HttpDelete("{id}")]
-    [Authorize]
     [Tags("幂等接口")]
     [EndpointSummary("删除订单API")]
     [EndpointDescription("删除订单")]
@@ -50,7 +50,6 @@ public class OrderController : ControllerBase
     /// <param name="order">订单</param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    [Authorize]
     [Tags("幂等接口")]
     [EndpointSummary("修改订单API")]
     [EndpointDescription("修改订单")]
@@ -67,7 +66,6 @@ public class OrderController : ControllerBase
     /// <param name="id">ID</param>
     /// <returns></returns>
     [HttpGet("{id}")]
-    [Authorize]
     [Tags("非幂等接口")]
     [EndpointSummary("获取订单API")]
     [EndpointDescription("获取订单")]

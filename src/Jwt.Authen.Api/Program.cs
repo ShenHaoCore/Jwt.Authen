@@ -1,7 +1,11 @@
+using Asp.Versioning;
+using Jwt.Authen.Api.Commons;
 using Jwt.Authen.Api.Scalar;
 using Jwt.Authen.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using System.Text;
 
@@ -26,20 +30,44 @@ builder.Services.AddAuthentication(options => {
 });
 builder.Services.AddSingleton<TokenService>();
 
-// Add services to the container.
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi(options => {
-    options.AddDocumentTransformer<AuthenApiDocumentTransformer>();
-    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader(),
+        new HeaderApiVersionReader("X-API-VERSION"),
+        new MediaTypeApiVersionReader("VER")
+        );
+}).AddMvc().AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
 });
+
+foreach (var version in ApiVersionHelper.GetApiVersions(typeof(ApiVersionConsts)))
+{
+    builder.Services.AddOpenApi($"v{version}", option =>
+    {
+        //option.AddDocumentTransformer<AuthenApiDocumentTransformer>();
+        option.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+        option.AddDocumentTransformer((document, context, cancellationToken) =>
+        {
+            document.Info = new() { Title = $"微服务 - V{version.ToUpper()}", Version = $"v{version}", Description = $"微服务相关接口" };
+            return Task.CompletedTask;
+        });
+    });
+}
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapScalarApiReference(); // scalar/v1
+    app.MapScalarApiReference();
     app.MapOpenApi();
 }
 

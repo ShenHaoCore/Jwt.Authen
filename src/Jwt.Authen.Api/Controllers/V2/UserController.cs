@@ -1,15 +1,16 @@
-﻿using Jwt.Authen.Api.Models;
+﻿using Asp.Versioning;
+using Jwt.Authen.Api.Commons;
+using Jwt.Authen.Api.Models;
 using Jwt.Authen.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Jwt.Authen.Api.Controllers;
+namespace Jwt.Authen.Api.Controllers.V2;
 
 /// <summary>
 /// 用户
 /// </summary>
-[Route("api/[controller]/[action]")]
-[ApiController]
-public class UserController : ControllerBase
+[ApiVersion(ApiVersionConsts.V2)]
+public class UserController : BaseApiController
 {
     private readonly TokenService _tokenService;
 
